@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Home</title>
+		
+		<head th:fragment="css">
+			<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+		</head>
+		
+		<head th:fragment="js">
+			<script th:src="@{/js/bootstrap.min.js}"></script>
+		</head>
+		
+		<head th:fragment="common-style">
+			<style type="text/css">
+				body {
+					background-color: #DCDCDC;
+				}
+			</style>
+		</head>
+	</head>
+	
+	<body>
+		<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark" style="background-color: #2F4F4F">
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		    	<span class="navbar-toggler-icon"></span>
+		  	</button>
+			<a class="navbar-brand" th:href="@{/}">SIPEG</a>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active">
+						<a class="nav-link" th:href="@{/}">Home</a>
+					</li>
+					<li class="nav-item active">
+						<a class="nav-link" th:href="@{/pegawai/tambah}">Tambah Pegawai</a>
+					</li>
+					<li class="nav-item active">
+						<a class="nav-link" th:href="@{/jabatan/tambah}">Tambah Jabatan</a>
+					</li>
+					<li class="nav-item active">
+						<a class="nav-link" th:href="@{/pegawai/cari}">Cari Pegawai</a>
+					</li>
+					<li class="nav-item active">
+						<a class="nav-link" th:href="@{/jabatan/viewall}">Lihat Semua Jabatan</a>
+					</li>
+				</ul>
+			</div>
+		</nav>	
+	</body>
+</html>

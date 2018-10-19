@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Detail Jabatan</title>
+		
+		<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+		<object th:include="fragments/fragment :: js" th:remove="tag"></object>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+		<script src="/js/hapus-jabatan.js"></script>
+		<object th:include="fragments/fragment :: common-style" th:remove="tag"></object>
+	</head>
+	
+	<body>
+		<nav th:replace="fragments/fragment :: navbar"></nav>
+		<br>
+		<div align="center">
+			<h1 th:text="'Detail Jabatan ' + ${jabatan.nama}"></h1>
+		</div>
+		<hr>
+		<div class="row">
+		 	<div class="col-sm-4"></div>
+			<div class="col-sm-4">
+				<div class="row">
+					<label for="nama" class="col-sm-3 col-form-label-md">Nama</label>
+						<div class="col-sm-9">
+							<p th:text="${jabatan.nama}"></p>
+						</div>
+				</div>
+			
+				<div class="row">
+					<label for="deskripsi" class="col-sm-3 col-form-label-md">Deskripsi</label>
+						<div class="col-sm-9">
+							<p th:text="${jabatan.deskripsi}"></p>
+						</div>
+				</div>
+			
+				<div class="row">
+					<label for="gajiPokok" class="col-sm-3 col-form-label-md">Gaji Pokok</label>
+						<div class="col-sm-9">
+							<p th:text="${jabatan.gajiPokok}"></p>
+						</div>
+				</div>
+			
+				<div class="row">
+					<label for="jumlahPegawai" class="col-sm-3 col-form-label-md">Jumlah Pegawai</label>
+						<div class="col-sm-9">
+							<p th:text="${jabatan.employeesList.size()}"></p>
+						</div>
+				</div>
+				
+				<div style="margin:auto; width:300px">
+					<div class="row" align= "center">
+						<form th:action="@{/jabatan/ubah}" class="form-inline" method="GET">
+							<input type="hidden" th:value="${jabatan.id}" name="idJabatan"></input>
+							<button style="margin:0px 10px 0px 10px" class="btn btn-success" type="submit">Ubah</button>
+						</form><br>
+						<form th:if="${jabatan.employeesList.isEmpty()} == true"  th:action="@{/jabatan/hapus}" class="form-inline" method="POST">
+							<input type="hidden" th:value="${jabatan.id}" name="idJabatan"></input>
+							<button id="success" style="margin:0px 10px 0px 10px" class="btn btn-danger" type="submit">Hapus</button>
+						</form>
+						<div th:if="${jabatan.employeesList.isEmpty()} == false">
+							<button id="ignore" class="btn btn-danger">Hapus</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4"></div>
+		</div> 
+	</body>
+</html>
