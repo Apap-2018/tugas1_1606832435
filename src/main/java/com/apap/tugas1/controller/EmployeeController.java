@@ -118,4 +118,107 @@ public class EmployeeController {
 		model.addAttribute("pegawai", pegawai);
 		return "tambah-pegawai-berhasil";
 	}
+	
+	@RequestMapping(value = "/pegawai/ubah", method = RequestMethod.GET)
+	private String update(@RequestParam("nip") String nip, Model model) {
+		EmployeeModel pegawai = employeeService.getEmployeeDetailByNIP(nip);
+		currEmployeeId = pegawai.getId();
+		
+		List<ProvinceModel> provinces = provinceService.getProvinceList();
+		List<PositionModel> positions = positionService.getJabatanDb().findAll();
+		List<InstansiModel> instansiIns = instansiService.getInstansiList();
+		
+		model.addAttribute("pegawai", pegawai);
+		model.addAttribute("provinces", provinces);
+		model.addAttribute("positions", positions);
+		model.addAttribute("instansiIns", instansiIns);
+		
+		return "update-pegawai";
+	}
+	
+	@RequestMapping(value = "/pegawai/ubah", params= {"addMoreJabatanUpdate"})
+	private String addMoreJabatanUpdate(@ModelAttribute EmployeeModel pegawai, BindingResult bindingResult, Model model) {
+		pegawai.getListJabatan().add(new PositionModel());
+		
+		List<ProvinceModel> provinces = provinceService.getProvinceList();
+		List<PositionModel> positions = positionService.getJabatanDb().findAll();
+		List<InstansiModel> instansiIns = instansiService.getInstansiList();
+		
+		model.addAttribute("pegawai", pegawai);
+		model.addAttribute("provinces", provinces);
+		model.addAttribute("positions", positions);
+		model.addAttribute("instansiIns", instansiIns);
+		
+		return "update-pegawai";
+	}
+	
+	@RequestMapping(value = "/pegawai/ubah", params={"submit"}, method = RequestMethod.POST)
+	private String updatePegawaiSubmit(@ModelAttribute EmployeeModel pegawai, Model model) {
+		pegawai.setId(currEmployeeId);
+		employeeService.updateEmployee(pegawai);
+		pegawai.setNip(employeeService.getEmployeeDb().getOne(currEmployeeId).getNip());
+		
+		model.addAttribute("pegawai", pegawai);
+		return "update-pegawai-berhasil";
+	}
+	
+	@RequestMapping(value = "/pegawai/cari")
+	private String searchAndFilter(Model model) {
+		List<EmployeeModel> employees = employeeService.getEmployeeList();
+		List<ProvinceModel> provinces = provinceService.getProvinceList();
+		List<PositionModel> positions = positionService.getJabatanDb().findAll();
+		List<InstansiModel> instansiIns = instansiService.getInstansiList();
+		
+		model.addAttribute("text", null);
+		model.addAttribute("employees", employees);
+		model.addAttribute("provinces", provinces);
+		model.addAttribute("positions", positions);
+		model.addAttribute("instansiIns", instansiIns);
+		
+		return "cari-pegawai";
+	}
+	
+	@RequestMapping(value = "/pegawai/cari", method = RequestMethod.GET)
+	private String filter(@RequestParam(value = "id_Provinsi", required = false) Long id_Provinsi, @RequestParam(value = "id_Instansi", required = false) Long id_Instansi,
+						  @RequestParam(value = "id_Jabatan", required = false) Long id_Jabatan, Model model) {
+		
+		List<EmployeeModel> listPegawai = new ArrayList<EmployeeModel>();
+		
+		if(id_Provinsi != null && id_Instansi != null && id_Jabatan != null) {
+			listPegawai = employeeService.getEmployeeDb().findByProvinsiAndInstansiAndJabatan(id_Provinsi, id_Instansi, id_Jabatan);
+			model.addAttribute("text", "Hasil pencarian pegawai berdasarkan provinsi, instansi, dan jabatan");
+		} else if (id_Provinsi != null && id_Instansi != null && id_Jabatan == null) {
+			listPegawai = employeeService.getEmployeeDb().findByProvinsiAndInstansi(id_Provinsi, id_Instansi);
+			model.addAttribute("text", "Hasil pencarian pegawai berdasarkan provinsi dan instansi");
+		} else if (id_Provinsi != null && id_Instansi == null && id_Jabatan != null) {
+			listPegawai = employeeService.getEmployeeDb().findByProvinsiAndJabatan(id_Provinsi, id_Jabatan);
+			model.addAttribute("text", "Hasil pencarian pegawai berdasarkan provinsi dan jabatan");
+		} else if (id_Provinsi == null && id_Instansi != null && id_Jabatan != null) {
+			listPegawai = employeeService.getEmployeeDb().findByInstansiAndJabatan(id_Instansi, id_Jabatan);
+			model.addAttribute("text", "Hasil pencarian pegawai berdasarkan instansi dan jabatan");		
+		} else if (id_Provinsi != null && id_Instansi == null && id_Jabatan == null) {
+			listPegawai = employeeService.getEmployeeDb().findByProvinsi(id_Provinsi);
+			model.addAttribute("text", "Hasil pencarian pegawai berdasarkan provinsi");
+		} else if (id_Provinsi == null && id_Instansi != null && id_Jabatan == null) {
+			listPegawai = employeeService.getEmployeeDb().findByInstansi(instansiService.getInstansiDb().getOne(id_Instansi));
+			model.addAttribute("text", "Hasil pencarian pegawai berdasarkan instansi");
+		} else if (id_Provinsi == null && id_Instansi == null && id_Jabatan != null) {
+			listPegawai = employeeService.getEmployeeDb().findByJabatan(id_Jabatan);
+			model.addAttribute("text", "Hasil pencarian pegawai berdasarkan jabatan");
+		}
+		
+		List<ProvinceModel> provinces = provinceService.getProvinceList();
+		List<PositionModel> positions = positionService.getJabatanDb().findAll();
+		List<InstansiModel> instansiIns = instansiService.getInstansiList();
+		
+		model.addAttribute("employees", listPegawai);
+		model.addAttribute("provinces", provinces);
+		model.addAttribute("positions", positions);
+		model.addAttribute("instansiIns", instansiIns);
+		model.addAttribute("id_Provinsi", id_Provinsi);
+		model.addAttribute("id_Instansi", id_Instansi);
+		model.addAttribute("id_Jabatan", id_Jabatan);
+		
+		return "cari-pegawai";
+	}
 }

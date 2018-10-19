@@ -14,4 +14,5 @@ public interface EmployeeService {
 	List<EmployeeModel> getEmployeeList();
 	EmployeeDb getEmployeeDb();
 	void addEmployee(EmployeeModel employee);
+	void updateEmployee(EmployeeModel employee);
 }

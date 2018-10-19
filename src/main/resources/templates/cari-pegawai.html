@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Cari Pegawai</title>
+		<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+		<object th:include="fragments/fragment :: js" th:remove="tag"></object>
+		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+		
+		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+		<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+		<script type="text/javascript" src="/js/cari-pegawai-filter.js"></script>
+		<object th:include="fragments/fragment :: basic" th:remove="tag"></object>
+	</head>
+	
+	<body>
+		<nav th:replace="fragments/fragment :: navbar"></nav>
+		<br>
+		<div align="center">
+			<h1>Cari Pegawai</h1>
+		</div>
+		<hr>
+		<br>
+		<div class="container-fluid">
+			<div class="row" style="margin:auto">
+				<div class="col-6">
+					<form th:action="@{/pegawai/cari}" id="kriteria-form" th:object="${pegawai}" method="GET">
+					<div class="form-group row">
+						<label for="provinsi" class="col-sm-3 col-form-label-md">Provinsi</label>
+						<div class="col-sm-9">
+							<select name="id_Provinsi" id="form-value1" class="form-control">
+								<option
+				                   th:each="provinsi,iterationStat: ${provinces}"
+				                   th:text="${provinsi.nama}" 
+				                   th:selected="${provinsi.id == id_Provinsi}" th:value="${provinsi.id}"></option>
+					            <option th:if="${id_Provinsi == null}" selected hidden value=''>Pilih Provinsi</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="instansi" class="col-sm-3 col-form-label-md">Nama Instansi</label>
+						<div class="col-sm-9">
+							<select name="id_Instansi" id="form-value2" class="form-control">
+								<option
+				                   th:each="instansi,iterationStat: ${instansiIns}"
+				                   th:text="${instansi.nama} + ' - ' + ${instansi.provinsi.nama}" 
+				                   th:selected="${instansi.id == id_Instansi}" th:value="${instansi.id}"></option>
+					            <option th:if="${id_Instansi == null}" selected hidden value=''>Pilih Instansi</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="jabatan" class="col-sm-3 col-form-label-md">Jabatan</label>
+						<div class="col-sm-9">
+							<select name="id_Jabatan" id="form-value3" class="form-control">
+								<option
+				                   th:each="jabatan,iterationStat: ${positions}"
+				                   th:text="${jabatan.nama}" 
+				                   th:selected="${jabatan.id == id_Jabatan}" th:value="${jabatan.id}"></option>
+				                <option th:if="${id_Jabatan == null}" selected hidden value=''>Pilih Jabatan</option>
+							</select>
+						</div>
+					</div>
+					<div class="text-right">
+						<button type="submit" class="btn btn-success">Cari</button>
+					</div>
+				</form>
+			</div>
+			</div>
+			
+			<hr>
+			<br>
+			
+			<div class="row">
+				<div class="col">
+					<table border="1" id="pegawai_table">
+						<caption>Daftar Pegawai</caption>
+						<thead>
+							<tr>
+								<th style="text-align: center">NIP</th>
+								<th style="text-align: center">Nama</th>
+								<th style="text-align: center">Tempat Lahir</th>
+								<th style="text-align: center">Tanggal Lahir</th>
+								<th style="text-align: center">Tahun Masuk</th>
+								<th style="text-align: center">Nama Instansi</th>
+								<th style="text-align: center">Jabatan</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="pegawai,iterationStatus : ${employees}">
+								<td th:text="${pegawai.nip}"></td>
+								<td th:text="${pegawai.nama}"></td>
+								<td th:text="${pegawai.tempatLahir}"></td>
+								<td th:text="${pegawai.tanggalLahir}"></td>
+								<td th:text="${pegawai.tahunMasuk}"></td>
+								<td th:text="${pegawai.instansi.nama} + ' - ' + ${pegawai.instansi.provinsi.nama}"></td>
+								<td>
+									<p>
+										<span th:each="jabatan, iterStat : ${pegawai.listJabatan}">
+											<a th:text="${jabatan.nama}"></a>
+											<a th:if="${iterStat.last} == false" th:text="'| '"></a>	
+										</span>
+									</p>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</body>
+	
+</html>
