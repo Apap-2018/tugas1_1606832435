@@ -72,16 +72,15 @@
 				<div class="form-group row">
 					<label for="jabatan" class="col-sm-3 col-form-label-md">Jabatan</label>
 					<div class="col-sm-9">
-						<div th:each="jabatan,iterationStatus : *{listJabatan}">
-							<select required id="*{listJabatan[__${iterationStatus.index}__]}" name="*{listJabatan[__${iterationStatus.index}__]}"class="form-control">
+						<div th:each="jabatans,iterationStatus : *{listJabatan}">
+							<select required id="jabatan" th:field="*{listJabatan[__${iterationStatus.index}__]}" class="form-control">
 								<option
-				                   th:each="aJabatan,iterationStat: ${positions}"
-				                   th:text="${aJabatan.nama}" th:value="${aJabatan.id}"
-				                   th:selected="(*{listJabatan[__${iterationStatus.index}__].id} == ${aJabatan.id})"></option>
+				                   th:each="jabatan,iterationStat: ${positions}"
+				                   th:text="${jabatan.nama}" th:value="${jabatan.id}"></option>
 							</select>
-							<p></p>
+							<br>
 						</div>
-						<input formnovalidate type="submit" name="addMoreJabatanUpdate" value="Tambah Jabatan">
+						<button class="btn btn-danger" formnovalidate type="submit" name="addMoreJabatanUpdate">Tambah jabatan</button>
 					</div>
 				</div>
 				<div class="text-right">
