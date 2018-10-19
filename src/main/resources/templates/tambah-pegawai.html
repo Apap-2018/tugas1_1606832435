@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Tambah Pegawai</title>
+		
+		<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+		<object th:include="fragments/fragment :: js" th:remove="tag"></object>
+		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+		
+		<object th:include="fragments/fragment :: common-style" th:remove="tag"></object>
+	</head>
+	
+	<body>
+		<nav th:replace="fragments/fragment :: navbar"></nav>
+		<br>
+		<div align = "center">
+			<h1>Tambah Pegawai</h1>
+		</div>
+		<hr>
+		<div class="col-sm"></div>
+		<div class="col-sm">
+			<form th:action="@{/pegawai/tambah}" th:object="${pegawai}" method="POST">
+				<input type="hidden" th:value="${pegawai.nip}"></input>
+				<div class="form-group row">
+					<label for="nama" class="col-sm-3 col-form-label-md">Nama</label>
+					<div class="col-sm-9">
+						<input required type="text" name="nama" class="form-control" id="nama" />
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="tempatLahir" class="col-sm-3 col-form-label-md">Tempat Lahir</label>
+					<div class="col-sm-9">
+						<input required type="text" name="tempatLahir" class="form-control" id="tempatLahir" />
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="tanggalLahir" class="col-sm-3 col-form-label-md">Tanggal Lahir</label>
+					<div class="col-sm-9">
+						<input required type="date" name="tanggalLahir" class="form-control" id="tanggalLahir" />
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="tahunMasuk" class="col-sm-3 col-form-label-md">Tahun Masuk</label>
+					<div class="col-sm-9">
+						<input required type="number" name="tahunMasuk" class="form-control" id="tahunMasuk"/>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="provinsi" class="col-sm-3 col-form-label-md">Provinsi</label>
+					<div class="col-sm-9">
+						<select required name="provinsi" id="provinsi" class="form-control">
+							<option
+			                    th:each="provinsi,iterationStatus: ${provinces}"
+			                    th:text="${provinsi.nama}" th:value="${provinsi.id}"></option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="instansi" class="col-sm-3 col-form-label-md">Nama Instansi</label>
+					<div class="col-sm-9">
+
+						<select required name="instansi" id="instansi" class="form-control">
+							<option  th:each="instansi, iterationStatus:${instansiIns}"
+								th:text="${instansi.nama} + ' - ' + ${instansi.provinsi.nama}" th:value="${instansi.id}">Pilih Instansi</option>
+						</select>
+						
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="jabatan" class="col-sm-3 col-form-label-md">Jabatan</label>
+					<div class="col-sm-9">
+						<div th:each="aJabatan,iterationStatus : *{listJabatan}">
+							<select id='jabatan' required th:field="*{listJabatan[__${iterationStatus.index}__]}" class="form-control">
+								<option
+					             th:each="jabatan,iterationStat: ${positions}"
+					             th:text="${jabatan.nama}" th:value="${jabatan.id}"></option>
+							</select>
+							<br>
+						</div>
+						<button class="btn btn-danger" formnovalidate type="submit" name="addRowJabatan">Tambah jabatan</button>
+					</div>
+				</div>
+				<div class="text-right">
+					<button id="submit" name="submit" type="submit" class="btn btn-success">Simpan</button>
+				</div>
+			</form>
+		</div>
+		<div class="col-sm"></div>
+	</body>
+</html>

@@ -69,4 +69,29 @@ public class EmployeeServiceImpl implements EmployeeService{
 	public List<EmployeeModel> getEmployeeList() {
 		return employeeDb.findAll();
 	}
+	
+	@Override
+	public void addEmployee(EmployeeModel employee) {		
+		String kodeInstansi = Long.toString(employee.getInstansi().getId());
+		String kodeTanggalLahir = employee.getTanggalLahir().toString();
+		String hari = kodeTanggalLahir.substring(8);
+		String bulan = kodeTanggalLahir.substring(5, 7);
+		String tahun = kodeTanggalLahir.substring(2, 4);
+		kodeTanggalLahir = hari + bulan + tahun;
+		String kodeTahunMasuk = employee.getTahunMasuk();
+		
+		String lahirMasukSama = "";
+		
+		List<EmployeeModel> employeeSama = employeeDb.findByTahunMasukAndTanggalLahir(employee.getTahunMasuk(), employee.getTanggalLahir());
+		employeeSama.add(employee);
+		lahirMasukSama = Integer.toString(employeeSama.size());
+		
+		if (Integer.parseInt(lahirMasukSama) < 10) {
+			lahirMasukSama = "0" + lahirMasukSama;
+		}
+		
+		employee.setNip(kodeInstansi + kodeTanggalLahir + kodeTahunMasuk + lahirMasukSama);
+		
+		employeeDb.save(employee);
+	}
 }

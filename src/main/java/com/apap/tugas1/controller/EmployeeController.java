@@ -23,7 +23,19 @@ import com.apap.tugas1.service.ProvinceService;
 
 @Controller
 public class EmployeeController {
-
+	// Temporary untuk Pegawai yang Sedang Dilihat/Diupdate/Ditambahkan
+	private Long currEmployeeId;
+	private EmployeeModel currentEmployeee;
+		
+	@Autowired
+	private PositionService positionService;
+	
+	@Autowired
+	private InstansiService instansiService;
+	
+	@Autowired
+	private ProvinceService provinceService;
+	
 	@Autowired
 	private EmployeeService employeeService;
 	
@@ -63,5 +75,47 @@ public class EmployeeController {
 		model.addAttribute("tertua", tertuir);
 		model.addAttribute("termuda", termuda);
 		return "lihat-pegawai-oldYoung";
+	}
+	
+	@RequestMapping(value = "/pegawai/tambah", method = RequestMethod.GET)
+	private String add(Model model) {
+		currentEmployeee = new EmployeeModel();
+		currentEmployeee.setListJabatan(new ArrayList<PositionModel>());
+		currentEmployeee.getListJabatan().add(new PositionModel());
+		
+		List<ProvinceModel> provinces = provinceService.getProvinceList();
+		List<PositionModel> positions = positionService.getJabatanDb().findAll();
+		List<InstansiModel> instansiIns = instansiService.getInstansiList();
+		model.addAttribute("pegawai", currentEmployeee);
+		model.addAttribute("provinces", provinces);
+		model.addAttribute("positions", positions);
+		model.addAttribute("instansiIns", instansiIns);
+		
+		return "tambah-pegawai";
+	}
+	
+	@RequestMapping(value = "/pegawai/tambah", params= {"addRowJabatan"})
+	private String addRowJabatan(@ModelAttribute EmployeeModel pegawai, BindingResult bindingResult, Model model) {
+		pegawai.setListJabatan(currentEmployeee.getListJabatan());
+		pegawai.getListJabatan().add(new PositionModel());
+		
+		List<ProvinceModel> provinces = provinceService.getProvinceList();
+		List<PositionModel> positions = positionService.getJabatanDb().findAll();
+		List<InstansiModel> instansiIns = instansiService.getInstansiList();
+		
+		model.addAttribute("pegawai", currentEmployeee);
+		model.addAttribute("provinces", provinces);
+		model.addAttribute("positions", positions);
+		model.addAttribute("instansiIns", instansiIns);
+		
+		return "tambah-pegawai";
+	}
+	
+	@RequestMapping(value = "/pegawai/tambah", params={"submit"}, method = RequestMethod.POST)
+	private String addPegawaiSubmit(@ModelAttribute EmployeeModel pegawai, Model model) {
+		employeeService.addEmployee(pegawai);
+		
+		model.addAttribute("pegawai", pegawai);
+		return "tambah-pegawai-berhasil";
 	}
 }

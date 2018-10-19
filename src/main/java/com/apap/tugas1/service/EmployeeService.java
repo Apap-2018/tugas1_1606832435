@@ -13,4 +13,5 @@ public interface EmployeeService {
 	EmployeeModel getYoungestEmployee(long id);
 	List<EmployeeModel> getEmployeeList();
 	EmployeeDb getEmployeeDb();
+	void addEmployee(EmployeeModel employee);
 }
