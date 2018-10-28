@@ -61,6 +61,7 @@ public class EmployeeModel implements Serializable{
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "jabatan_pegawai", joinColumns = @JoinColumn(name = "id_pegawai", referencedColumnName = "id"),
 	           inverseJoinColumns = @JoinColumn(name = "id_jabatan", referencedColumnName = "id"))
+	@JsonIgnore
     private List<PositionModel> listJabatan;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

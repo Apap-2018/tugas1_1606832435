@@ -60,12 +60,11 @@
 				<div class="form-group row">
 					<label for="instansi" class="col-sm-3 col-form-label-md">Nama Instansi</label>
 					<div class="col-sm-9">
-
-						<select required name="instansi" id="instansi" class="form-control">
-							<option  th:each="instansi, iterationStatus:${instansiIns}"
-								th:text="${instansi.nama} + ' - ' + ${instansi.provinsi.nama}" th:value="${instansi.id}">Pilih Instansi</option>
+						<select required name="instansi" th:value=*{instansi} id="instansi" class="form-control">
+							<option 
+								th:each="instansi, iterationStatus: ${instansiIns}"
+								th:text="${instansi.nama}" th:value="${instansi.id}"></option>
 						</select>
-						
 					</div>
 				</div>
 				<div class="form-group row">
@@ -88,5 +87,25 @@
 			</form>
 		</div>
 		<div class="col-sm"></div>
+		
+		<!--  <script type="text/javascript">
+			$(document).ready(function () {   
+			    $("#provinsi").change(function () {
+		            $.getJSON("/instansi/getFromProvinsi", {
+		                provinsiId : $(this).val(),
+		                ajax : 'true'
+		            }, function(data) {
+		                var html = '';
+		                var len = data.length;
+		                for ( var i = 0; i < len; i++) {
+		                    html += '<option value="' + data[i].id + '">'
+		                            + data[i].nama +'</option>';
+		                }
+		                html += '';
+		                $('#instansi').html(html);
+		            });
+			    });       
+			});
+		</script>-->
 	</body>
 </html>

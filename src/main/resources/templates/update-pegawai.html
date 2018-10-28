@@ -5,9 +5,8 @@
 		
 		<object th:include="fragments/fragment :: css" th:remove="tag"></object>
 		<object th:include="fragments/fragment :: js" th:remove="tag"></object>
-		
+		<script src="/js/filter-instansi-by-provinsi.js"></script>
 		<object th:include="fragments/fragment :: basic" th:remove="tag"></object>
-	
 	</head>
 	
 	<body>
@@ -60,13 +59,11 @@
 				<div class="form-group row">
 					<label for="instansi" class="col-sm-3 col-form-label-md">Nama Instansi</label>
 					<div class="col-sm-9">
-
-						<select required name="instansi" id="instansi" class="form-control">
-							<option  th:each="instansi, iterationStatus:${instansiIns}"
-								th:text="${instansi.nama} + ' - ' + ${instansi.provinsi.nama}" th:value="${instansi.id}"
+						<select required name="instansi" id="instansi" th:value="*{instansi}" class="form-control">
+							<option  th:each="instansi, iterationStatus: ${instansiIns}"
+								th:text="${instansi.nama}" th:value="${instansi.id}"
 								th:selected="${instansi.id == pegawai.instansi.id}">Pilih Instansi</option>
 						</select>
-						
 					</div>
 				</div>
 				<div class="form-group row">
@@ -89,7 +86,5 @@
 			</form>	
 		</div>
 		<div class="col-sm"></div>
-		
 	</body>
-	
 </html>

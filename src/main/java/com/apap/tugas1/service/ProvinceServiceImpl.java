@@ -1,6 +1,7 @@
 package com.apap.tugas1.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -29,5 +30,10 @@ public class ProvinceServiceImpl implements ProvinceService {
 	@Override
 	public ProvinceDb getProvinsiDb() {
 		return provinsiDb;
+	}
+	
+	@Override
+	public Optional<ProvinceModel> getProvinsiById(Long id) {
+		return provinsiDb.findById(id);
 	}
 }

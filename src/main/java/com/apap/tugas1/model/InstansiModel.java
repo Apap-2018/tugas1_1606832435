@@ -1,5 +1,6 @@
 package com.apap.tugas1.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -23,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "instansi")
-public class InstansiModel {
+public class InstansiModel implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
@@ -44,7 +45,8 @@ public class InstansiModel {
 	@JsonIgnore
 	private ProvinceModel provinsi;
 	
-	@OneToMany(mappedBy = "instansi", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "instansi", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<EmployeeModel> employeesList;
 	
 	public List<EmployeeModel> getEmployeesList() {

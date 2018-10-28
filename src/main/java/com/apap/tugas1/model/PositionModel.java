@@ -20,6 +20,8 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "jabatan")
 public class PositionModel implements Serializable{
@@ -45,6 +47,7 @@ public class PositionModel implements Serializable{
 	@JoinTable(name = "jabatan_pegawai", joinColumns = @JoinColumn(name = "id_jabatan", referencedColumnName = "id"),
 	           inverseJoinColumns = @JoinColumn(name = "id_pegawai", referencedColumnName = "id"))
 	@OnDelete(action = OnDeleteAction.NO_ACTION)
+	@JsonIgnore
 	private List<EmployeeModel> employeesList;
 	
 	public List<EmployeeModel> getEmployeesList() {

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.apap.tugas1.model.InstansiModel;
+import com.apap.tugas1.model.ProvinceModel;
 import com.apap.tugas1.repository.InstansiDb;
 
 @Service

@@ -1,5 +1,6 @@
 package com.apap.tugas1.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -14,10 +15,12 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "provinsi")
 
-public class ProvinceModel {
+public class ProvinceModel implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
@@ -31,7 +34,8 @@ public class ProvinceModel {
 	@Column(name = "presentase_tunjangan", nullable = false)
 	private double tunjangan;
 	
-	@OneToMany(mappedBy = "provinsi", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JsonIgnore
+	@OneToMany(mappedBy = "provinsi", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<InstansiModel> instansiList;
 	
 	public List<InstansiModel> getInstansiList() {
